@@ -1,0 +1,26 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Book Nerd Registration
+{% endblock %}
+
+{% block body %}
+    <h1>Register for Book Nerd</h1>
+
+    <form action="{{ url_for('newuser') }}" method="post">
+
+        <div class="form-group">
+            <input class="form-control" name="name" placeholder="User Name">
+        </div>
+
+        <div class="form-group">
+            <input class="form-control" type = "password" name="password" placeholder="Enter Password Here">
+        </div>
+        <h5>Please enter the username and password you want to use.</h5>
+        <div class="form-group">
+            <button class="btn btn-primary">Register</button>
+        </div>
+
+    </form>
+
+{% endblock %}

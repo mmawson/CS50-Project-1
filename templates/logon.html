@@ -1,0 +1,27 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Success!
+{% endblock %}
+
+{% block body %}
+    <h1>Success!</h1>
+    {{ name }} with password {{ password }} or {{ pword }}
+    You have successfully logged in.
+
+    Once they log in, they will be able to search for books, leave reviews for individual books, and see the reviews made by other people. You’ll also use the a third-party API by Goodreads, another book review website, to pull in ratings from a broader audience. Finally, users will be able to query for book details and book reviews programmatically via your website’s API.
+
+<form action="{{ url_for('books') }}" method="POST">
+
+  <div class="form-group">
+    <input class="form-control" searchString="searchString" placeholder="Enter author query here">
+  </div>
+
+  <div class="form-group">
+    <button class="btn btn-primary">Search</button>
+  </div>
+
+</form>
+
+
+{% endblock %}
