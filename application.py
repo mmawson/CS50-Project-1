@@ -69,11 +69,18 @@ def newuser():
 
 @app.route("/books", methods=["POST"])
 def books():
-    Mquery = request.form.get("query")
-#    query = "Stephen King"
-    print(Mquery)
-#    books = db.execute("SELECT * FROM books WHERE author = :query", {"query": query}).fetchall() #,
-    return render_template("books.html", books=books)
+    query = request.form.get('query')
+    books = db.execute("SELECT * FROM books WHERE author = :query", {"query": query}).fetchall()
+
+#    for line in books:
+#        line = line.split(',')
+
+    #books = books.split("()")
+#    books = "bla bla <br> more bla"
+    if books == []:
+        return render_template("error.html", message="There are no books by " + query)
+    else:
+        return render_template("books.html", books=books , author=query)
 
 
 

@@ -5,5 +5,13 @@
 {% endblock %}
 
 {% block body %}
-    {{ books }}
+  {{ author }} has written these books:
+  <br>
+  <br>
+  ISBN ----- Year  Title
+  <ul>
+ {% for book in books %}
+   <li><a href="GoodReads API">{{ book }}</a></li>
+ {% endfor %}
+ </ul>
 {% endblock %}
