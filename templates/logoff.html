@@ -1,0 +1,17 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Log Off
+{% endblock %}
+
+{% block body %}
+    <h1>You have been Logged Off</h1>
+    <br>
+    <br>
+        <form action="{{ url_for('index') }}">
+            <div class="form-group">
+                <button class="btn btn-outline-secondary">Return to Logon</button>
+           </div>
+         </form>
+
+{% endblock %}

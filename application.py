@@ -2,6 +2,7 @@ import os
 
 from flask import Flask, render_template, request, session
 from flask_session import Session
+from flask_login import LoginManager
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
 
@@ -22,6 +23,9 @@ Session(app)
 engine = create_engine(os.getenv("DATABASE_URL"))
 db = scoped_session(sessionmaker(bind=engine))
 
+# Initialize the login manager
+login_manager = LoginManager()
+
 @app.route("/")
 def index():
 #Log in
@@ -39,7 +43,8 @@ def login():
 
     try:
         if pword[0][0] == password:
-            return render_template("logon.html", name=name, password=password, pword=pword)
+            usersName = name
+            return render_template("logon.html", name=usersName, password=password, pword=pword)
         else:
             return render_template("error.html", message="It's Invalid user or password")
     except:
@@ -66,23 +71,44 @@ def newuser():
 #    for table in dbtables:
 #        return "{table.table_name}"
 #    return "Project 1: TODO"
+@app.route("/logoff")
+def logoff():
+    usersName = ""
+    return render_template("logoff.html")
+
 
 @app.route("/books", methods=["POST"])
 def books():
     query = request.form.get('query')
-    books = db.execute("SELECT * FROM books WHERE author = :query", {"query": query}).fetchall()
-
+    query = "%"+query+"%"
+    books = db.execute("SELECT title FROM books WHERE author LIKE :query", {"query": query}).fetchall()
+    books = books + db.execute("SELECT title FROM books WHERE title LIKE :query", {"query": query}).fetchall()
+    books = books + db.execute("SELECT title FROM books WHERE isbn LIKE :query", {"query": query}).fetchall()
 #    for line in books:
 #        line = line.split(',')
-
+    for i in range(0, len(books)):
+#        print(books[i][0])
+        books[i] = books[i][0]
+#        print(books[i])
+#        books[i] = books[i].replace("(", "")
+    print('crap')
+    print(usersName)
+    print('above is the name')
     #books = books.split("()")
 #    books = "bla bla <br> more bla"
     if books == []:
         return render_template("error.html", message="There are no books by " + query)
     else:
-        return render_template("books.html", books=books , author=query)
+        return render_template("books.html", books=books , author=query, name=usersName)
 
-
+@app.route("/review", methods=["GET","POST"])
+def review():
+    if session.get("reviews") is None:
+        session["reviews"] = []
+    if request.method == "POST":
+        review = request.form.get("review")
+        session["reviews"].append(review)
+    return render_template("reviews.html", reviews=reviews)
 
 #   return render_template("error.html", message="Invalid book or something spooky")#Log in
 #"SELECT * FROM users WHERE (username = 'input_username') AND (password = 'input_password')";

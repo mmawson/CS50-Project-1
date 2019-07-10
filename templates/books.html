@@ -5,13 +5,20 @@
 {% endblock %}
 
 {% block body %}
-  {{ author }} has written these books:
+  {{ name }} and {{ author }} has written these book(s):
   <br>
   <br>
-  ISBN ----- Year  Title
   <ul>
  {% for book in books %}
-   <li><a href="GoodReads API">{{ book }}</a></li>
+   <li><a href="https://www.goodreads.com/search.xml?key=zThvJNvL0rnfZEy8RaNnGA&q={{book}}">{{ book }}</a></li>
  {% endfor %}
  </ul>
+
+<h3>Review a Book</h3>
+<form action="{{ url_for('review') }}" method="get">
+    <div class="form-group">
+        <button class="btn btn-primary">Go to Reviews</button>
+   </div>
+</form>
+
 {% endblock %}
